@@ -2,14 +2,16 @@ package network
 
 import (
 	"errors"
-	"github.com/gorilla/websocket"
 	"github.com/binlihpu/leaf/log"
+	"github.com/gorilla/websocket"
 	"net"
 	"sync"
 )
 
+// WebsocketConnSet .
 type WebsocketConnSet map[*websocket.Conn]struct{}
 
+// WSConn .
 type WSConn struct {
 	sync.Mutex
 	conn      *websocket.Conn
@@ -55,6 +57,7 @@ func (wsConn *WSConn) doDestroy() {
 	}
 }
 
+// Destroy .
 func (wsConn *WSConn) Destroy() {
 	wsConn.Lock()
 	defer wsConn.Unlock()
@@ -62,6 +65,7 @@ func (wsConn *WSConn) Destroy() {
 	wsConn.doDestroy()
 }
 
+// Close .
 func (wsConn *WSConn) Close() {
 	wsConn.Lock()
 	defer wsConn.Unlock()
@@ -83,20 +87,24 @@ func (wsConn *WSConn) doWrite(b []byte) {
 	wsConn.writeChan <- b
 }
 
+// LocalAddr .
 func (wsConn *WSConn) LocalAddr() net.Addr {
 	return wsConn.conn.LocalAddr()
 }
 
+// RemoteAddr .
 func (wsConn *WSConn) RemoteAddr() net.Addr {
 	return wsConn.conn.RemoteAddr()
 }
 
+// ReadMsg .
 // goroutine not safe
 func (wsConn *WSConn) ReadMsg() ([]byte, error) {
 	_, b, err := wsConn.conn.ReadMessage()
 	return b, err
 }
 
+// WriteMsg .
 // args must not be modified by the others goroutines
 func (wsConn *WSConn) WriteMsg(args ...[]byte) error {
 	wsConn.Lock()

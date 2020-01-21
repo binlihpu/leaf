@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// TCPClient .
 type TCPClient struct {
 	sync.Mutex
 	Addr            string
@@ -27,6 +28,7 @@ type TCPClient struct {
 	msgParser    *MsgParser
 }
 
+// Start .
 func (client *TCPClient) Start() {
 	client.init()
 
@@ -117,6 +119,7 @@ reconnect:
 	}
 }
 
+// Close .
 func (client *TCPClient) Close() {
 	client.Lock()
 	client.closeFlag = true

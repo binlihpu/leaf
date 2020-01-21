@@ -6,8 +6,10 @@ import (
 	"sync"
 )
 
+// ConnSet .
 type ConnSet map[net.Conn]struct{}
 
+// TCPConn .
 type TCPConn struct {
 	sync.Mutex
 	conn      net.Conn
@@ -53,6 +55,7 @@ func (tcpConn *TCPConn) doDestroy() {
 	}
 }
 
+// Destroy .
 func (tcpConn *TCPConn) Destroy() {
 	tcpConn.Lock()
 	defer tcpConn.Unlock()
@@ -60,6 +63,7 @@ func (tcpConn *TCPConn) Destroy() {
 	tcpConn.doDestroy()
 }
 
+// Close .
 func (tcpConn *TCPConn) Close() {
 	tcpConn.Lock()
 	defer tcpConn.Unlock()
@@ -96,18 +100,22 @@ func (tcpConn *TCPConn) Read(b []byte) (int, error) {
 	return tcpConn.conn.Read(b)
 }
 
+// LocalAddr .
 func (tcpConn *TCPConn) LocalAddr() net.Addr {
 	return tcpConn.conn.LocalAddr()
 }
 
+// RemoteAddr .
 func (tcpConn *TCPConn) RemoteAddr() net.Addr {
 	return tcpConn.conn.RemoteAddr()
 }
 
+// ReadMsg .
 func (tcpConn *TCPConn) ReadMsg() ([]byte, error) {
 	return tcpConn.msgParser.Read(tcpConn)
 }
 
+// WriteMsg .
 func (tcpConn *TCPConn) WriteMsg(args ...[]byte) error {
 	return tcpConn.msgParser.Write(tcpConn, args...)
 }

@@ -7,6 +7,7 @@ import (
 	"math"
 )
 
+// MsgParser .
 // --------------
 // | len | data |
 // --------------
@@ -17,6 +18,7 @@ type MsgParser struct {
 	littleEndian bool
 }
 
+// NewMsgParser .
 func NewMsgParser() *MsgParser {
 	p := new(MsgParser)
 	p.lenMsgLen = 2
@@ -27,6 +29,7 @@ func NewMsgParser() *MsgParser {
 	return p
 }
 
+// SetMsgLen .
 // It's dangerous to call the method on reading or writing
 func (p *MsgParser) SetMsgLen(lenMsgLen int, minMsgLen uint32, maxMsgLen uint32) {
 	if lenMsgLen == 1 || lenMsgLen == 2 || lenMsgLen == 4 {
@@ -56,6 +59,7 @@ func (p *MsgParser) SetMsgLen(lenMsgLen int, minMsgLen uint32, maxMsgLen uint32)
 	}
 }
 
+// SetByteOrder .
 // It's dangerous to call the method on reading or writing
 func (p *MsgParser) SetByteOrder(littleEndian bool) {
 	p.littleEndian = littleEndian

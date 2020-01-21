@@ -1,12 +1,13 @@
 package network
 
 import (
-	"github.com/gorilla/websocket"
 	"github.com/binlihpu/leaf/log"
+	"github.com/gorilla/websocket"
 	"sync"
 	"time"
 )
 
+// WSClient .
 type WSClient struct {
 	sync.Mutex
 	Addr             string
@@ -23,6 +24,7 @@ type WSClient struct {
 	closeFlag        bool
 }
 
+// Start .
 func (client *WSClient) Start() {
 	client.init()
 
@@ -119,6 +121,7 @@ reconnect:
 	}
 }
 
+// Close .
 func (client *WSClient) Close() {
 	client.Lock()
 	client.closeFlag = true

@@ -7,6 +7,7 @@ import (
 	"time"
 )
 
+// TCPServer .
 type TCPServer struct {
 	Addr            string
 	MaxConnNum      int
@@ -26,6 +27,7 @@ type TCPServer struct {
 	msgParser    *MsgParser
 }
 
+// Start .
 func (server *TCPServer) Start() {
 	server.init()
 	go server.run()
@@ -113,6 +115,7 @@ func (server *TCPServer) run() {
 	}
 }
 
+// Close .
 func (server *TCPServer) Close() {
 	server.ln.Close()
 	server.wgLn.Wait()
