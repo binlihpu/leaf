@@ -1,10 +1,11 @@
 package cluster
 
 import (
-	"github.com/binlihpu/leaf/conf"
-	"github.com/binlihpu/leaf/network"
 	"math"
 	"time"
+
+	"github.com/binlihpu/leaf/conf"
+	"github.com/binlihpu/leaf/network"
 )
 
 var (
@@ -12,6 +13,7 @@ var (
 	clients []*network.TCPClient
 )
 
+// Init 初始化变量
 func Init() {
 	if conf.ListenAddr != "" {
 		server = new(network.TCPServer)
@@ -40,6 +42,7 @@ func Init() {
 	}
 }
 
+// Destroy 关闭服务
 func Destroy() {
 	if server != nil {
 		server.Close()
