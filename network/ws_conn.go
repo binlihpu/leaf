@@ -2,10 +2,11 @@ package network
 
 import (
 	"errors"
-	"github.com/binlihpu/leaf/log"
-	"github.com/gorilla/websocket"
 	"net"
 	"sync"
+
+	"github.com/binlihpu/leaf/log"
+	"github.com/gorilla/websocket"
 )
 
 // WebsocketConnSet .

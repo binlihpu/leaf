@@ -12,10 +12,10 @@ import (
 
 // levels
 const (
-	debugLevel   = 0
-	releaseLevel = 1
-	errorLevel   = 2
-	fatalLevel   = 3
+	debugLevel   = 0 //非关键日志，可用于开发调试
+	releaseLevel = 1 //关键日志，等同于Info
+	errorLevel   = 2 //错误日志
+	fatalLevel   = 3 //致命错误日志，注意：会直接结束进程
 )
 
 const (
@@ -26,9 +26,9 @@ const (
 )
 
 type Logger struct {
-	level      int
-	baseLogger *log.Logger
-	baseFile   *os.File
+	level      int         //日志级别
+	baseLogger *log.Logger //标准库日志
+	baseFile   *os.File    //日志输出文件
 }
 
 func New(strLevel string, pathname string, flag int) (*Logger, error) {
@@ -102,7 +102,7 @@ func (logger *Logger) doPrintf(level int, printLevel string, format string, a ..
 	format = printLevel + format
 	logger.baseLogger.Output(3, fmt.Sprintf(format, a...))
 
-	if level == fatalLevel {
+	if level == fatalLevel { //遇到致命错误直接退出
 		os.Exit(1)
 	}
 }

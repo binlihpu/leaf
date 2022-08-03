@@ -1,20 +1,22 @@
 package gate
 
 import (
-	"github.com/binlihpu/leaf/chanrpc"
-	"github.com/binlihpu/leaf/log"
-	"github.com/binlihpu/leaf/network"
 	"net"
 	"reflect"
 	"time"
+
+	"github.com/binlihpu/leaf/chanrpc"
+	"github.com/binlihpu/leaf/log"
+	"github.com/binlihpu/leaf/network"
 )
 
+//Gate网关，负责客户端接入
 type Gate struct {
-	MaxConnNum      int
-	PendingWriteNum int
-	MaxMsgLen       uint32
-	Processor       network.Processor
-	AgentChanRPC    *chanrpc.Server
+	MaxConnNum      int               //最大连接数
+	PendingWriteNum int               //最大写入消息数量
+	MaxMsgLen       uint32            //每个消息的最大长度
+	Processor       network.Processor //消息处理器
+	AgentChanRPC    *chanrpc.Server   //
 
 	// websocket
 	WSAddr      string

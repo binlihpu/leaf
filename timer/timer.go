@@ -1,10 +1,11 @@
 package timer
 
 import (
-	"github.com/binlihpu/leaf/conf"
-	"github.com/binlihpu/leaf/log"
 	"runtime"
 	"time"
+
+	"github.com/binlihpu/leaf/conf"
+	"github.com/binlihpu/leaf/log"
 )
 
 // one dispatcher per goroutine (goroutine not safe)
@@ -48,6 +49,7 @@ func (t *Timer) Cb() {
 	}
 }
 
+//等待d时间后执行cb函数
 func (disp *Dispatcher) AfterFunc(d time.Duration, cb func()) *Timer {
 	t := new(Timer)
 	t.cb = cb
@@ -68,6 +70,7 @@ func (c *Cron) Stop() {
 	}
 }
 
+//定时执行作业_cb函数
 func (disp *Dispatcher) CronFunc(cronExpr *CronExpr, _cb func()) *Cron {
 	c := new(Cron)
 

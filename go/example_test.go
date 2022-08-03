@@ -2,13 +2,13 @@ package g_test
 
 import (
 	"fmt"
-	"github.com/binlihpu/leaf/go"
 	"time"
+
+	g "github.com/binlihpu/leaf/go"
 )
 
 func Example() {
 	d := g.New(10)
-
 	// go 1
 	var res int
 	d.Go(func() {

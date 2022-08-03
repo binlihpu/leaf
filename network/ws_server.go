@@ -2,33 +2,34 @@ package network
 
 import (
 	"crypto/tls"
-	"github.com/binlihpu/leaf/log"
-	"github.com/gorilla/websocket"
 	"net"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/binlihpu/leaf/log"
+	"github.com/gorilla/websocket"
 )
 
-// WSServer .
+// WSServer是ws服务端结构体
 type WSServer struct {
-	Addr            string
-	MaxConnNum      int
-	PendingWriteNum int
-	MaxMsgLen       uint32
-	HTTPTimeout     time.Duration
-	CertFile        string
-	KeyFile         string
+	Addr            string        //监听地址和端口，格式和标准库一致，如：127.0.0.1：3000
+	MaxConnNum      int           //最大连接数，缺省值100
+	PendingWriteNum int           //缺省值100
+	MaxMsgLen       uint32        //消息最大长度，缺省值4096
+	HTTPTimeout     time.Duration //超时时间，缺省值10s
+	CertFile        string        //证书文件
+	KeyFile         string        //证书key
 	NewAgent        func(*WSConn) Agent
 	ln              net.Listener
-	handler         *WSHandler
+	handler         *WSHandler //所有的ws处理器对象
 }
 
-// WSHandler .
+// WSHandler是ws的处理器管理，有效连接管理保存到conns
 type WSHandler struct {
 	maxConnNum      int
 	pendingWriteNum int
-	maxMsgLen       uint32
+	maxMsgLen       uint32 //每个消息的最大长度，缺省值4096
 	newAgent        func(*WSConn) Agent
 	upgrader        websocket.Upgrader
 	conns           WebsocketConnSet
@@ -36,6 +37,12 @@ type WSHandler struct {
 	wg              sync.WaitGroup
 }
 
+/*
+type Handler interface {
+	ServeHTTP(ResponseWriter, *Request)
+}
+这里ServeHTTP是实现此接口
+*/
 func (handler *WSHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, "Method not allowed", 405)
@@ -78,7 +85,7 @@ func (handler *WSHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	agent.OnClose()
 }
 
-// Start .
+// 监听端口，启动服务
 func (server *WSServer) Start() {
 	ln, err := net.Listen("tcp", server.Addr)
 	if err != nil {
@@ -143,13 +150,13 @@ func (server *WSServer) Start() {
 	go httpServer.Serve(ln)
 }
 
-// Close .
+// 关闭连接，按顺序释放资源
 func (server *WSServer) Close() {
-	server.ln.Close()
+	server.ln.Close() //关闭监听端口
 
 	server.handler.mutexConns.Lock()
 	for conn := range server.handler.conns {
-		conn.Close()
+		conn.Close() //断开连接
 	}
 	server.handler.conns = nil
 	server.handler.mutexConns.Unlock()

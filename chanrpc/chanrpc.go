@@ -3,13 +3,15 @@ package chanrpc
 import (
 	"errors"
 	"fmt"
+	"runtime"
+
 	"github.com/binlihpu/leaf/conf"
 	"github.com/binlihpu/leaf/log"
-	"runtime"
 )
 
 // one server per goroutine (goroutine not safe)
 // one client per goroutine (goroutine not safe)
+//用于模块间通信使用，注册过程不是goroutine安全的
 type Server struct {
 	// id -> function
 	//

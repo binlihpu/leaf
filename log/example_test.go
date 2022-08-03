@@ -1,11 +1,13 @@
 package log_test
 
 import (
-	"github.com/binlihpu/leaf/log"
 	l "log"
+	"testing"
+
+	"github.com/binlihpu/leaf/log"
 )
 
-func Example() {
+func Example(t *testing.T) {
 	name := "Leaf"
 
 	log.Debug("My name is %v", name)

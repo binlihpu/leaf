@@ -1,10 +1,11 @@
 package module
 
 import (
-	"github.com/binlihpu/leaf/conf"
-	"github.com/binlihpu/leaf/log"
 	"runtime"
 	"sync"
+
+	"github.com/binlihpu/leaf/conf"
+	"github.com/binlihpu/leaf/log"
 )
 
 type Module interface {
@@ -13,6 +14,7 @@ type Module interface {
 	Run(closeSig chan bool)
 }
 
+//逻辑模块
 type module struct {
 	mi       Module
 	closeSig chan bool
